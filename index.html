@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Final | Servidor Linux & NexoCli</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- DeepMind Inspired Theme --- */
+        :root {
+            --color-background: #0d1117;
+            --color-text: #e6edf3; /* Lighter main text */
+            --color-text-muted: #a1aab4; /* Increased contrast for muted text */
+            --color-border: #30363d;
+            --color-card-bg: #161b22;
+            --accent-gradient: linear-gradient(90deg, #4a90e2, #9013fe);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text);
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        /* --- Navigation Bar --- */
+        .navbar {
+            background-color: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #fff;
+        }
+        .nav-link {
+            color: var(--color-text-muted);
+            font-weight: 400;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+        }
+        .nav-link.active {
+            font-weight: 700;
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        #inicio {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-bottom: none;
+        }
+
+        /* --- Typography & Accents --- */
+        h1, h2, .gradient-text {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: 700;
+        }
+        h1 { font-size: 4rem; }
+        h2 { font-size: 3rem; padding-bottom: 20px; }
+        .lead {
+            color: var(--color-text-muted);
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+
+        /* --- Custom Components --- */
+        .btn-gradient {
+            background: var(--accent-gradient);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .service-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #9013fe;
+        }
+        .service-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .service-card h3 {
+            color: #fff;
+        }
+        .status-badge {
+            background-color: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+            border: 1px solid #3fb950;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        .architecture-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: var(--color-card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+        }
+        .architecture-diagram .step {
+            text-align: center;
+        }
+        .architecture-diagram .icon {
+            font-size: 2.5rem;
+        }
+        .architecture-diagram .arrow {
+            font-size: 2rem;
+            color: var(--color-text-muted);
+        }
+        
+        /* --- Terminal Animation --- */
+        .terminal-animation {
+            background-color: #010409;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 1rem;
+        }
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+        .terminal-header .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .terminal-header .dot.red { background-color: #ff5f56; }
+        .terminal-header .dot.yellow { background-color: #ffbd2e; }
+        .terminal-header .dot.green { background-color: #27c93f; }
+
+        .terminal-body p {
+            margin-bottom: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .line {
+            margin-bottom: 10px;
+        }
+        .line1 {
+            color: #3fb950;
+            width: 0;
+            animation: typing 2s steps(40, end) forwards;
+        }
+        .line1::after {
+            content: '\2588';
+            animation: blink 1s step-end infinite;
+        }
+        .line2 {
+            color: var(--color-text-muted);
+            width: 0;
+            opacity: 0;
+            animation: typing 2s steps(40, end) 2.5s forwards, fadeIn 0.1s 2.5s forwards;
+        }
+        .line3 {
+            color: var(--color-text);
+            width: 0;
+            opacity: 0;
+            animation: typing 3s steps(60, end) 5s forwards, fadeIn 0.1s 5s forwards;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            from, to { color: transparent; }
+            50% { color: #3fb950; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#navbar-main">
+
+    <!-- Barra de Navegação Fixa -->
+    <nav id="navbar-main" class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#inicio">Projeto Final | UFCD 5115</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#inicio">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#arquitetura">Arquitetura</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#servicos">Serviços</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#nexocli">NexoCli</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#conclusao">Conclusão</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Secção 1: Início -->
+    <section id="inicio">
+        <div class="container">
+            <h1 class="display-1">Implementação de Servidor Linux com Gestão por IA</h1>
+            <p class="lead mt-4">Um projeto que integra infraestrutura de serviços robusta com a flexibilidade da inteligência artificial.</p>
+            <p class="mt-3"><strong>Autores:</strong> Nuno Salvação & Rodolfo Coelho</p>
+            <a href="#arquitetura" class="btn btn-gradient mt-4">Explorar o Projeto</a>
+        </div>
+    </section>
+
+    <main>
+        <!-- Secção 2: Arquitetura -->
+        <section id="arquitetura">
+            <div class="container">
+                <h2 class="text-center">Arquitetura de Rede e Acesso Externo</h2>
+                <p class="lead text-center mb-5">Para garantir a acessibilidade global, foi desenhada uma arquitetura de rede que expõe os serviços da máquina virtual de forma segura e eficiente.</p>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <h3>O Caminho da Conexão</h3>
+                        <p>Um pedido externo, como o acesso a esta página, atravessa várias camadas. O router, atuando como porteiro, utiliza regras de <strong>DMZ</strong> e <strong>Port Forwarding</strong> para encaminhar o tráfego corretamente para o servidor Ubuntu, que está isolado numa Máquina Virtual.</p>
+                        <ul>
+                            <li><strong>DMZ (Demilitarized Zone):</strong> Atua como um funil, direcionando tráfego não especificado para o nosso servidor.</li>
+                            <li><strong>Port Forwarding:</strong> Cria "atalhos" diretos para serviços específicos como SSH (porta 22) e HTTP (porta 80).</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="architecture-diagram">
+                            <div class="step">
+                                <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                                <p>Internet</p>
+                            </div>
+                            <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="step">
+                                <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <p>Router (DMZ/NAT)</p>
+                            </div>
+                            <div class="arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="step">
+                                <div class="icon"><i class="fa-brands fa-ubuntu"></i></div>
+                                <p>VM Ubuntu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secção 3: Serviços -->
+        <section id="servicos">
+            <div class="container">
+                <h2 class="text-center">Fundação de Serviços Operacionais</h2>
+                <p class="lead text-center mb-5">Quatro serviços essenciais formam a espinha dorsal do servidor, todos validados e a operar em harmonia.</p>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card">
+                            <div class="icon"><i class="fa-solid fa-terminal"></i></div>
+                            <h3>SSH</h3>
+                            <p>Permite o acesso remoto seguro para administração multi-utilizador do servidor em modo *headless*.</p>
+                            <span class="status-badge">Status: Operacional</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card">
+                            <div class="icon"><i class="fa-solid fa-server"></i></div>
+                            <h3>Apache2</h3>
+                            <p>O servidor web responsável por alojar e servir esta mesma página de apresentação.</p>
+                            <span class="status-badge">Status: Operacional</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card">
+                            <div class="icon"><i class="fa-solid fa-database"></i></div>
+                            <h3>MySQL</h3>
+                            <p>Sistema de gestão de base de dados, pronto para armazenar e gerir dados de aplicações.</p>
+                            <span class="status-badge">Status: Operacional</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="service-card">
+                            <div class="icon"><i class="fa-solid fa-folder-tree"></i></div>
+                            <h3>Samba</h3>
+                            <p>Oferece partilha de ficheiros em rede, integrando o servidor Linux com clientes Windows.</p>
+                            <span class="status-badge">Status: Operacional</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secção 4: NexoCli -->
+        <section id="nexocli">
+            <div class="container">
+                <h2 class="text-center">A Estrela do Projeto: NexoCli</h2>
+                <p class="lead text-center mb-5">Implementámos o NexoCli, um fork do `gemini-cli` da Google, como uma interface de gestão inteligente e conversacional.</p>
+                
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-6">
+                        <h3>Instalação e Demonstração</h3>
+                        <p>Após a instalação de dependências como Node.js, o NexoCli é instalado via NPM. A sua capacidade de interagir com o sistema e de utilizar ferramentas como a Pesquisa Google para responder a questões complexas é o seu maior trunfo.</p>
+                        <p>A animação ao lado simula uma interação real, demonstrando como o NexoCli processa um pedido e devolve uma resposta estruturada.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="terminal-animation">
+                            <div class="terminal-header">
+                                <div class="dot red"></div>
+                                <div class="dot yellow"></div>
+                                <div class="dot green"></div>
+                            </div>
+                            <div class="terminal-body">
+                                <div class="line">
+                                    <p class="line1">$ nexo-cli ask "explain protein sequencing"</p>
+                                </div>
+                                <div class="line">
+                                    <p class="line2">◆ Searching the web for: "protein sequencing methods"...</p>
+                                </div>
+                                <div class="line">
+                                    <p class="line3">Based on my research, there are two primary methods: Edman degradation and mass spectrometry...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secção 5: Conclusão -->
+        <section id="conclusao">
+            <div class="container text-center">
+                <h2>Conclusão e Demonstração</h2>
+                <p class="lead mb-4">Este projeto validou competências na criação de uma infraestrutura de servidor completa, segura e inovadora.</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <ul class="list-unstyled text-start">
+                            <li class="mb-2"><i class="fa-solid fa-check-circle me-2 gradient-text"></i> Servidor multi-serviço 100% funcional e validado.</li>
+                            <li class="mb-2"><i class="fa-solid fa-check-circle me-2 gradient-text"></i> Arquitetura de rede com acesso externo via web e SSH.</li>
+                            <li class="mb-2"><i class="fa-solid fa-check-circle me-2 gradient-text"></i> Interface de gestão por IA implementada e personalizada.</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="mt-5">Passemos agora à demonstração ao vivo da ferramenta.</h3>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container-fluid">
+        <p>&copy; 2025 Nuno Salvação & Rodolfo Coelho. Projeto Final da UFCD 5115.</p>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
