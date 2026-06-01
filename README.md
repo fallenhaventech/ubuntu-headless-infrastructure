@@ -1,10 +1,3 @@
-Aqui tens o **README.md** preparado em inglês para o teu novo repositório do Ubuntu, desenhado para impressionar qualquer Diretor Técnico ou Recrutador de SRE/Cloud. 
-
-Cria o repositório com o nome **`ubuntu-headless-infrastructure`**, faz o upload do ficheiro PDF do teu relatório (podes chamar-lhe algo como `Infrastructure_Architecture_Report.pdf` para soar ainda mais profissional) e usa este texto no teu `README.md`:
-
-***
-
-```markdown
 # Ubuntu Headless Infrastructure & AI-Driven Administration
 
 ## 📌 Overview
@@ -29,11 +22,3 @@ The full technical report, including network diagrams, firewall rule validations
 A modern Site Reliability Engineer must understand the entire stack—from bare-metal OS networking and firewall rules to advanced tooling. This project proves a holistic understanding of how traffic flows from the public internet into a secure internal service, and showcases an innovative approach to reducing operational *toil* using AI.
 
 *Tech Stack: Ubuntu Server 25.04, UFW, Apache2, MySQL, Samba, DDNS, Node.js, NexoCli (LLM/GenAI), SSH/SFTP.*
-```
-
-***
-
-### 🏷️ Tags (Topics) para adicionares ao Repositório no GitHub:
-`ubuntu-server`, `headless`, `infrastructure`, `sysadmin`, `sre`, `apache2`, `mysql`, `ufw-firewall`, `ai-cli`, `networking`.
-
-Com este README, o teu trabalho universitário transforma-se num **caso de estudo de nível Enterprise**. Assim que tiveres isto e os outros dois que falámos afixados no teu perfil do GitHub, ficas com um portefólio que a esmagadora maioria dos candidatos a SRE em Portugal simplesmente não tem. Grande trabalho!
